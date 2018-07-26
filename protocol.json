@@ -1,0 +1,398 @@
+// 1、登录
+// 查看用户是否已经注册  route: /user/verify
+// c->s
+{
+	"userId": "<字符串> 用户openid"
+}
+// s->c
+{
+	"errCode": "<数字> 错误码--0:已注册 1:未注册"
+}
+
+// 绑定用户信息  route: /user/bindInformation
+//c->s
+{
+	"userId": "<字符串> 用户openid",
+	"userName": "<字符串> 用户昵称",
+	"schoolNumber": "<字符串> 用户学号/工号",
+	"school": "<字符串> 学校名称",
+	"identity": "<数字> 用户身份--0:学生 1:老师",
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:登陆 1:登陆失败",
+}
+
+//2、课程
+//查看课程列表  route: /course/queryCourseList
+//c->s
+{
+	"userId": "<字符串> 被邀请者openid",
+}
+//s->c
+{
+	"courseListOn":[{
+		"courseId": "<字符串> 课程id",
+		"courseName": "<字符串> 课程名称",
+		"imageUrl": "<字符串> 图片url",
+		"teacherId": "<字符串> 教师openid",
+		"teacherName": "<字符串> 教师名",
+		"weekDay": "<数字> 工作日(1:周一)",
+		"startTime": "<字符串> 上课开始时间 如20:30",
+		"endTime": "<字符串> 上课结束时间 如20:30",
+		"currentPeriod": "<数字> 当前课时",
+		"sumPeriods": "<数字> 总课时",
+		"location": "<字符串> 上课地点",
+		}] "<列表> 课程列表正在进行中",
+
+	"courseListOff":[{
+		"courseId": "<字符串> 课程id",
+		"courseName": "<字符串> 课程名称",
+		"imageUrl": "<字符串> 图片url",
+		"teacherId": "<字符串> 教师openid",
+		"teacherName": "<字符串> 教师名",
+		"weekDay": "<数字> 工作日(1:周一)",
+		"startTime": "<字符串> 上课开始时间 如20:30",
+		"endTime": "<字符串> 上课结束时间 如20:30",
+		"currentPeriod": "<数字> 当前课时",
+		"sumPeriods": "<数字> 总课时",
+		"location": "<字符串> 上课地点",
+		}] "<列表> 课程列表已完成"
+
+}
+
+//教师新建课程  route: /course/addCourse
+//c->s
+{
+	"userId": "<字符串> 用户openid",
+	"courseName": "<字符串> 课程名称",
+	"imageUrl": "<字符串> 图片url",
+	"weekDay": "<数字> 工作日(1:周一)",
+	"time": "<字符串> 时间，如20:30",
+	"dateStart": "<字符串> 课程起始日期 如2018.04.05",
+	"dateEnd": "<字符串> 课程结束日期 如2018.04.05",
+	"location": "<字符串> 上课地点",
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:添加成功 1:添加失败",
+	"courseId": "<字符串> 课程id",
+	"courseName": "<字符串> 课程名称",
+	"teacherName": "<字符串> 教师姓名",
+	"time": "<字符串> 时间，如20:30",
+	"location": "<字符串> 上课地点"
+
+}
+
+//学生加入课程  route: /course/joinCourse
+//c->s
+{
+	"userId": "<字符串> 被邀请者openid",
+	"courseId": "<字符串> 课程id"
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:加入成功 1:加入失败"
+}
+
+
+//教师端查看课程进度 route: /course/queryCourseByTeacher
+//c->s
+{
+	"courseId": "<字符串> 课程id",
+}
+//s->c
+{
+	"courseName": "<字符串> 课程名",
+	"currentPeriod": "<数字> 当前课时",
+	"sumPeriods": "<数字> 总课时",
+}
+
+//学生端查看课程进度  route: /course/queryCourseByStudent
+//c->s
+{
+	"courseId": "<字符串> 课程id",
+	"userId": "<字符串> 学生openid",
+}
+//s->c
+{
+	"courseName": "<字符串> 课程名",
+	"currentPeriod": "<数字> 当前课时",
+	"sumPeriods": "<数字> 总课时",
+	"count0": "<数字> 签到次数",
+	"count1": "<数字> 旷课次数",
+	"count2": "<数字> 请假次数",
+}
+
+//教师端查看课程报告数据(所有学生)  route: /course/queryAllCourseReports
+//c->s
+{
+	"courseId": "<字符串> 课程id",
+}
+//s->c
+{
+	"groupList":[{
+		"usersId": "<字符串> 学生openid",
+		"schoolNumber": "<字符串> 学生学号",
+		"studentName": "<字符串> 学生姓名",
+		"count0": "<数字> 签到次数",
+		"count1": "<数字> 旷课次数",
+		"count2": "<数字> 请假次数",
+		}]
+}
+
+//教师发起通知  route: /course/addNotice
+//c->s
+{
+	"courseId": "<字符串> 课程id",
+	"content": "<字符串> 通知内容"
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:发布成功 1:发布失败",
+}
+
+//查看课程文件  route: /course/queryFileList
+//c->s
+{
+	"courseId": "<字符串> 课程id",
+}
+//s->c
+{
+	"fileList":[{
+		"fileId": "<字符串> 文件id",
+		"fileName": "<字符串> 文件名",
+		"fileType": "<数字> 文件类型--0:w 1:p 2:x",
+		"createTime" "<字符串> 创建时间":
+		}] "<列表> 文件列表"
+}
+
+//3、日程
+
+//查看今日日程列表  route: /schedule/queryTodaySchedule
+//c->s
+{
+	"userId": "<字符串> 用户id",
+}
+//s->c
+{
+	"scheduleList":[{
+		"scheduleId": "<字符串> 日程id",
+		"theme": "<字符串> 日程主题",
+		"location": "<字符串> 日程地点",
+		"time": "<字符串> 时间，如20:50",
+		"detail": "<字符串> 详细内容",
+		"inform": "<数字> 0:通知 1:不通知"
+		}] "<列表> 今日日程列表"t
+}
+
+//查看全部日程  route: /schedule/queryAllSchedule
+//c->s
+{
+	"userId": "<字符串> 用户openid",
+	"pageId": "<数字> 分页id"
+}
+//s->c
+{
+	"scheduleList":[{
+		"scheduleId": "<字符串> 日程id",
+		"theme": "<字符串> 日程主题",
+		"date": "<字符串> 日期: 如2018-04-05",
+		"location": "<字符串> 地点",
+		"detail" "<字符串> 日程详情":,
+		"inform": "<数字> 0:通知 1:不通知"
+		}] "<列表> 全部日程列表"
+}
+
+//添加日程  route: /schedule/addSchedule
+//c->s
+{
+	"userId": "<字符串> 用户openid",
+	"schedule":{
+		"theme": "<字符串> 日程主题",
+		"date": "<字符串> 日期: 如 2018-04-05",
+		"time": "<字符串> 时间: 如 22:28",
+		"infromTime": "<数字> 如1:1小时前",
+		"location": "<字符串> 地点",
+		"detail": "<字符串> 日程详情",
+	}
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:添加成功 1:添加失败",
+	"scheduleId": "<字符串> 日程id"
+}
+
+
+//3、消息
+//老师消息列表  route: /message/queryMessageByTeacher
+//c->s
+{
+	"userId": "<字符串> 用户openid",
+}
+//s->c
+{
+	"commonMsgList":[{
+		"msgId": "<字符串> 消息id",
+		"date": "<字符串> 日期: 如 2018.04.05",
+		"time": "<字符串> 时间: 如 22:28",
+		"theme": "<字符串> 主题",
+		"msgContent": "<字符串> 消息内容"
+	}], //普通消息列表
+
+	"leaveList":[{
+		"msgId": "<字符串> 消息id",
+		"date": "<字符串> 日期: 如 2018.04.05",
+		"time": "<字符串> 时间: 如 22:28",
+		"theme": "<字符串> 主题",
+		"msgContent":{
+			"leaveId": "<字符串> 请假条id",
+			"courseId": "<字符串> 课程id",
+			"courseName": "<字符串> 课程名",
+			"date": "<字符串> 请假日期",
+			"studentName": "<字符串> 学生姓名",
+			"schoolNumber": "<字符串> 学生学号",
+			"reason": "<字符串>",
+		}//请假条信息
+	}]//请假条列表
+}
+
+//学生消息列表  route: /message/queryMessageByStudent
+//c->s
+{
+	"userId": "<字符串> 用户openid",
+}
+//s->c
+{
+	"signMsg":{
+		"msgId": "<字符串> 消息id",
+		"date": "<字符串> 日期: 如 2018.04.05",
+		"time": "<字符串> 时间: 如 22:28",
+		"theme": "<字符串> 主题",
+		"msgContent":{
+			"signId": "<字符串> 签到id",
+			"courseName": "<字符串> 课程名称",	
+		}
+	}, //签到信息
+	"commonMsgList":[{
+		"msgId": "<字符串> 消息id",
+		"date": "<字符串> 日期: 如 2018.04.05",
+		"time": "<字符串> 时间: 如 22:28",
+		"theme": "<字符串> 主题",
+		"msgContent": "<字符串> 消息内容"
+	}], //普通消息列表
+	"noticeList":[{
+		"msgId": "<字符串> 消息id",
+		"date": "<字符串> 日期: 如 2018.04.05",
+		"time": "<字符串> 时间: 如 22:28",
+		"theme": "<字符串> 主题",
+		"msgContent":{
+			"courseId": "<字符串> 课程id",
+			"courseName": "<字符串> 课程名称",
+			"date": "<字符串> 日期: 如 2018.04.05",
+			"location": "<字符串> 地点",
+			"detail": "<字符串> 事件"
+		}
+	}]
+}
+
+
+//4、请假条
+//学生发起请假  route: /leave/addLeave
+//c->s
+{
+	"userId": "<字符串> 学生id",
+	"courseId": "<字符串> 课程id",
+	"date": "<字符串> 请假日期: 如 2018.04.05",
+	"reason": "<字符串> 请假原因",
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:添加成功 1:添加失败",
+	"courseId": "<字符串> 课程id",
+	"courseName": "<字符串> 课程名称",
+	"studentName": "<字符串> 学生姓名",
+	"schoolNumber": "<字符串> 学生学号", 
+	"reason": "<字符串> 请假原因"
+}
+
+//老师批复请假条  route: /leave/reply
+//c->s
+{
+	"leaveId": "<字符串> 请假条id",
+	"agree": "<数字> 0:同意请假 1:驳回请假"
+}
+//s->c
+{
+	"errCode": "<数字> 0:批复成功 1:批复失败"
+}
+
+
+//5、签到
+//教师发起签到  route: /sign/addSign
+//c->s
+{
+	"courseId": "<字符串> 课程id",
+	"courseName": "<字符串> 课程名称",
+	"location": "<字符串> 地点",
+	"duration": "<数字> 签到持续时长 如2"
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:添加成功 1:添加失败",
+	"signId": "<字符串> 签到id",
+}
+
+//查看签到信息  route: /sign/querySign
+//c->s
+{
+	"signId": "<字符串> 签到id",
+}
+//s->c
+{
+	"signedNumber": "<数字> 已经签到人数",
+	"totalNumber": "<数字> 总人数",
+	"courseName": "<字符串> 课程名称",
+	"date": "<字符串> 日期: 如 2018.04.05",
+	"location": "<字符串> 地点",
+	"timeLeft": "<字符串> 剩余时间",
+}
+
+//检查是否已经签到  route: /sign/checkSign
+//c->s
+{
+	"signId": "<字符串> 签到id",
+	"userId": "<字符串> 学生id",
+}
+//s->c
+{
+	"errCode": "<数字> 0:未签到 1:已签到"
+}
+
+//签到  route: /sign/signIn
+//c->s
+{
+	"signId": "<字符串> 签到id",
+	"userId": "<字符串> 学生id",
+}
+//s->c
+{
+	"errCode": "<数字> 错误码--0:签到成功 1:签到失败",
+}
+
+/*
+路由:  
+问题：
+	1、教师端添加课程日程，添加课程提醒时无法获取课程id
+	2、学生端添加请假条时无法获取课程id
+		或者总的来说用户在非课程页面无法调取课程id和课程名列表
+		解决办法：1）在课程页面操作
+				2）课程列表数据作为全局数据存储，用户登录时在globalData中存储：课程id列表，课程名称列表。两个列表索引一致，则需要使用picker的地方可以调取课程名称列表，将pick的索引用于课程id列表即可获取课程id
+		建议第2种方法，遇到类似问题都可以灵活解决
+
+待做功能：
+ 	1、搜索页面: 课程搜索、日程搜索、消息搜索 待做
+	2、弹窗待做
+	3、通知机制待做
+	4、签到机制待做
+*/
